@@ -12,13 +12,13 @@ from bs4 import BeautifulSoup
 import requests
 import re
 
-API_ID = environ.get('API_ID')
-API_HASH = environ.get('API_HASH')
-BOT_TOKEN = environ.get('BOT_TOKEN')
-DOODSTREAM_API_KEY = environ.get('DOODSTREAM_API_KEY')
-BITLY_KEY = environ.get('BITLY_KEY')
-CHANNEL = environ.get('CHANNEL')
-HOWTO = environ.get('HOWTO')
+API_ID = environ.get('API_ID', 24748535)
+API_HASH = environ.get('API_HASH', '7600412f97699a960c218fa1240a0822')
+BOT_TOKEN = environ.get('BOT_TOKEN', '6005978396:AAF8v6xZwtmM0CBgDwy_DlYW9quk2czF8ws')
+DOODSTREAM_API_KEY = environ.get('DOODSTREAM_API_KEY', '201988m9954bb5is552b0r')
+BITLY_KEY = environ.get('BITLY_KEY', 'ca51d2eba85e838eb65650ff14abc4310ff98ce7')
+CHANNEL = environ.get('CHANNEL', 'https://red_trex')
+HOWTO = environ.get('HOWTO', 'https://google.com')
 bot = Client('Doodstream bot',
              api_id=API_ID,
              api_hash=API_HASH,
