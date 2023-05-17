@@ -16,9 +16,9 @@ import pyrogram
 from pyrogram.errors import UserAlreadyParticipant, InviteHashExpired
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-from telethon.sessions import StringSession
-from telethon.sync import TelegramClient
-from decouple import config
+#from telethon.sessions import StringSession
+#from telethon.sync import TelegramClient
+#from decouple import config
 import logging, sys
 import threading
 from doodstream import DoodStream
@@ -204,11 +204,14 @@ def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_me
 	
 
 @bot.on_message(filters.video)
-def videodood_upload(client: pyrogram.client.Client, message: pyrogram.types.messages_and_media.message.Message):
-    chatid = message.chat.id
-    msgid = message.message_id
-    try: handle_private(message,chatid,msgid)
-    except Exception as e: bot.send_message(message.chat.id,f"**Error** : __{e}__", reply_to_message_id=message.message_id)
+async def videodood_upload(bot, message):
+        smsg = bot.send_message(message.chat.id, '__Downloading__', reply_to_message_id=message.message_id)
+		dosta = threading.Thread(target=lambda:downstatus(f'{message.chat.id}{message.message_id}downstatus.txt',smsg),daemon=True)
+		dosta.start()
+		file = bot.download_media(message, progress=progress, progress_args=[message,"down"])
+		os.remove(f'{message.chat.id}{message.message_id}downstatus.txt')
+		upsta = threading.Thread(target=lambda:upstatus(f'{message.chat.id}{message.message_id}upstatus.txt',smsg),daemon=True)
+		upsta.start()
     
 
 # handle private
