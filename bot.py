@@ -218,7 +218,7 @@ def handle_private(message,chatid,msgid):
 		os.remove(f'{message.chat.id}{message.message_id}downstatus.txt')
 		"""upsta = threading.Thread(target=lambda:upstatus(f'{message.chat.id}{message.message_id}upstatus.txt',smsg),daemon=True)
 		upsta.start()"""
-		bot.edit_message_text(message.chat.id, message.message_id, "__Uploading Please Wait...__")
+		#bot.edit_message_text(message.chat.id, message.message_id, "__Uploading Please Wait...__")
 		
 		path=file
 		if "Document" or "Video" in str(msg):
@@ -248,7 +248,7 @@ async def vdood_upload(bot, message):
     os.remove(f'{message.chat.id}{message.message_id}downstatus.txt')
     """upsta = threading.Thread(target=lambda:upstatus(f'{message.chat.id}{message.message_id}upstatus.txt',smsg),daemon=True)
     upsta.start()"""
-    await bot.edit_message_text(message.chat.id, message.message_id, "__Uploading Please Wait...__")
+    #await bot.edit_message_text(message.chat.id, message.message_id, "__Uploading Please Wait...__")
     path=file
     if "Document" or "Video" in str(msg):
         try:
