@@ -230,13 +230,14 @@ def handle_private(message,chatid,msgid):
 				print(f"Video ID : {u['result'][0]['filecode']}")
 				print(f"Video Url : {u['result'][0]['download_url']}")
 				print("#" * 40)
-				smsg = bot.send_message(message.chat.id, "Status : {u['status']}\n\nVideo ID : {u['result'][0]['filecode']}\n\nVideo Url : {u['result'][0]['download_url']}", reply_to_message_id=message.message_id)
+				bot.delete_messages(message.chat.id,[smsg.message_id])
+				smsg = bot.send_message(message.chat.id, "**Status : {u['status']}**\n\n**Video ID : {u['result'][0]['filecode']}**\n\n**Video Url : {u['result'][0]['download_url']}**", reply_to_message_id=message.message_id)
 			except: 
 			    pass
 		
 		os.remove(file)
 		if os.path.exists(f'{message.chat.id}{message.message_id}upstatus.txt'): os.remove(f'{message.chat.id}{message.message_id}upstatus.txt')
-		bot.delete_messages(message.chat.id,[smsg.message_id])
+		
 
 
 @bot.on_message(filters.command('help') & filters.private)
