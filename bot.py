@@ -236,9 +236,8 @@ def handle_private(message,chatid,msgid):
 				smsg = bot.send_message(message.chat.id, f"**Status :** {u['status']}\n\n**Video ID :** {u['result'][0]['filecode']}\n\n**Download Url :** {u['result'][0]['download_url']}\n\n**Protected DL :** {u['result'][0]['protected_dl']}\n\n**Protected Embed :** {u['result'][0]['protected_embed']}\n\n ", reply_to_message_id=message.message_id)
 			except: 
 			    pass
-		
-		os.remove(file)
-		if os.path.exists(f'{message.chat.id}{message.message_id}upstatus.txt'): os.remove(f'{message.chat.id}{message.message_id}upstatus.txt')
+		#os.remove(file)
+		#if os.path.exists(f'{message.chat.id}{message.message_id}upstatus.txt'): os.remove(f'{message.chat.id}{message.message_id}upstatus.txt')
 
 
 @bot.on_message(filters.video)
@@ -246,8 +245,8 @@ async def vdood_upload(bot, message):
     smsg = bot.send_message(message.chat.id, '__Downloading__', reply_to_message_id=message.message_id)
     dosta = threading.Thread(target=lambda:downstatus(f'{message.chat.id}{message.message_id}downstatus.txt',smsg),daemon=True)
     dosta.start()
-    file = await bot.download_media(message, progress=progress, progress_args=[message,"down"])
-    os.remove(f'{message.chat.id}{message.message_id}downstatus.txt')
+    file = bot.download_media(message, progress=progress, progress_args=[message,"down"])
+    #os.remove(f'{message.chat.id}{message.message_id}downstatus.txt')
     upsta = threading.Thread(target=lambda:upstatus(f'{message.chat.id}{message.message_id}upstatus.txt',smsg),daemon=True)
     upsta.start()
 
