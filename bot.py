@@ -203,6 +203,14 @@ def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_me
 				except Exception as e: bot.send_message(message.chat.id,f"**Error** : __{e}__", reply_to_message_id=message.message_id)
 	
 
+@bot.on_message(filters.video & filters.private)
+async def videodood_upload(bot, message):
+    chatid = message.chat.id
+    msgid = message.message_id
+    try: handle_private(message,chatid,msgid)
+    except Exception as e: bot.send_message(message.chat.id,f"**Error** : __{e}__", reply_to_message_id=message.message_id)
+    
+
 # handle private
 def handle_private(message,chatid,msgid):
 		msg  = acc.get_messages(chatid,msgid)
