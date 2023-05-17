@@ -202,18 +202,7 @@ def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_me
 				try: handle_private(message,username,msgid)
 				except Exception as e: bot.send_message(message.chat.id,f"**Error** : __{e}__", reply_to_message_id=message.message_id)
 	
-
-@bot.on_message(filters.video)
-async def videodood_upload(bot, message):
-        smsg = bot.send_message(message.chat.id, '__Downloading__', reply_to_message_id=message.message_id)
-		dosta = threading.Thread(target=lambda:downstatus(f'{message.chat.id}{message.message_id}downstatus.txt',smsg),daemon=True)
-		dosta.start()
-		file = bot.download_media(message, progress=progress, progress_args=[message,"down"])
-		os.remove(f'{message.chat.id}{message.message_id}downstatus.txt')
-		upsta = threading.Thread(target=lambda:upstatus(f'{message.chat.id}{message.message_id}upstatus.txt',smsg),daemon=True)
-		upsta.start()
-    
-
+	
 # handle private
 def handle_private(message,chatid,msgid):
 		msg  = acc.get_messages(chatid,msgid)
@@ -250,7 +239,17 @@ def handle_private(message,chatid,msgid):
 		
 		os.remove(file)
 		if os.path.exists(f'{message.chat.id}{message.message_id}upstatus.txt'): os.remove(f'{message.chat.id}{message.message_id}upstatus.txt')
-		
+
+
+@bot.on_message(filters.video)
+async def vdood_upload(bot, message):
+        smsg = bot.send_message(message.chat.id, '__Downloading__', reply_to_message_id=message.message_id)
+		dosta = threading.Thread(target=lambda:downstatus(f'{message.chat.id}{message.message_id}downstatus.txt',smsg),daemon=True)
+		dosta.start()
+		file = bot.download_media(message, progress=progress, progress_args=[message,"down"])
+		os.remove(f'{message.chat.id}{message.message_id}downstatus.txt')
+		upsta = threading.Thread(target=lambda:upstatus(f'{message.chat.id}{message.message_id}upstatus.txt',smsg),daemon=True)
+		upsta.start()
 
 
 @bot.on_message(filters.command('help') & filters.private)
