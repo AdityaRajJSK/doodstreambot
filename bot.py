@@ -261,8 +261,8 @@ async def vdood_upload(bot, message):
             print("#" * 40)
             bot.delete_messages(message.chat.id,[smsg.message_id])
             smsg = bot.send_message(message.chat.id, f"**Status :** {u['status']}\n\n**Video ID :** {u['result'][0]['filecode']}\n\n**Download Url :** {u['result'][0]['download_url']}\n\n**Protected DL :** {u['result'][0]['protected_dl']}\n\n**Protected Embed :** {u['result'][0]['protected_embed']}\n\n ", reply_to_message_id=message.message_id)
-		except:
-		    pass
+        except:
+            pass
 	os.remove(file)
 	if os.path.exists(f'{message.chat.id}{message.message_id}upstatus.txt'): os.remove(f'{message.chat.id}{message.message_id}upstatus.txt')
     
