@@ -218,7 +218,7 @@ def handle_private(message,chatid,msgid):
 		os.remove(f'{message.chat.id}{message.message_id}downstatus.txt')
 		"""upsta = threading.Thread(target=lambda:upstatus(f'{message.chat.id}{message.message_id}upstatus.txt',smsg),daemon=True)
 		upsta.start()"""
-		bot.edit_message_text(message.chat.id,[smsg.message_id], "__Uploading Please Wait...__")
+		#bot.edit_message_text(message.chat.id,[smsg.message_id], "__Uploading Please Wait...__")
 		
 		path=file
 		if "Document" or "Video" in str(msg):
@@ -241,9 +241,9 @@ def handle_private(message,chatid,msgid):
 
 @bot.on_message(filters.video | filters.document)
 async def vdood_upload(bot, message):
-    smsg = bot.send_message(message.chat.id, '__Downloading__', reply_to_message_id=message.message_id)
-    """dosta = threading.Thread(target=lambda:downstatus(f'{message.chat.id}{message.message_id}downstatus.txt',smsg),daemon=True)
-    dosta.start()"""
+    smsg = await bot.send_message(message.chat.id, '__Downloading__', reply_to_message_id=message.message_id)
+    dosta = threading.Thread(target=lambda:downstatus(f'{message.chat.id}{message.message_id}downstatus.txt',smsg),daemon=True)
+    dosta.start()
     file = await bot.download_media(message, progress=progress, progress_args=[message,"down"])
     #os.remove(f'{message.chat.id}{message.message_id}downstatus.txt')
     """upsta = threading.Thread(target=lambda:upstatus(f'{message.chat.id}{message.message_id}upstatus.txt',smsg),daemon=True)
@@ -259,8 +259,8 @@ async def vdood_upload(bot, message):
             print(f"Protected DL : {u['result'][0]['protected_dl']}")
             print(f"Protected Embed : {u['result'][0]['protected_embed']}")
             print("#" * 40)
-            bot.delete_messages(message.chat.id,[smsg.message_id])
-            smsg = bot.send_message(message.chat.id, f"**Status :** {u['status']}\n\n**Video ID :** {u['result'][0]['filecode']}\n\n**Download Url :** {u['result'][0]['download_url']}\n\n**Protected DL :** {u['result'][0]['protected_dl']}\n\n**Protected Embed :** {u['result'][0]['protected_embed']}\n\n ", reply_to_message_id=message.message_id)
+            await bot.delete_messages(message.chat.id,[smsg.message_id])
+            smsg = await bot.send_message(message.chat.id, f"**Status :** {u['status']}\n\n**Video ID :** {u['result'][0]['filecode']}\n\n**Download Url :** {u['result'][0]['download_url']}\n\n**Protected DL :** {u['result'][0]['protected_dl']}\n\n**Protected Embed :** {u['result'][0]['protected_embed']}\n\n ", reply_to_message_id=message.message_id)
         except:
             pass
             
