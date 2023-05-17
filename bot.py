@@ -231,7 +231,7 @@ def handle_private(message,chatid,msgid):
 				print(f"Video Url : {u['result'][0]['download_url']}")
 				print("#" * 40)
 				bot.delete_messages(message.chat.id,[smsg.message_id])
-				smsg = bot.send_message(message.chat.id, "**Status : {u['status']}**\n\n**Video ID : {u['result'][0]['filecode']}**\n\n**Video Url : {u['result'][0]['download_url']}**", reply_to_message_id=message.message_id)
+				smsg = bot.send_message(message.chat.id, "**Status :** {u['status']}\n\n**Video ID :** {u['result'][0]['filecode']}\n\n**Video Url :** {u['result'][0]['download_url']}", reply_to_message_id=message.message_id)
 			except: 
 			    pass
 		
