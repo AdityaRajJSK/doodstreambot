@@ -29,7 +29,7 @@ BOT_TOKEN = environ.get('BOT_TOKEN', '6005978396:AAF8v6xZwtmM0CBgDwy_DlYW9quk2cz
 SESSION = environ.get('SESSION', 'AQBhPFxrmxMjobupLs54ZaLmwCv3IDGjiSOZS9CSoUenH-DfNUjZnXamwZ5vabZMAeJDaKM-gaCpf0_fWBiuAPBh1CWno2ICXBkpLmUd6BADn3kx3cjAOCbranR1BntU46ryLdK-qf08rELhYIT7LQnnj-U6HQ3qaOkfethlR7eweDNOZepijU0SEhxO-qfJiGT4uKwNdSxBKlNuSizYD29j3is7ceEl0K-SMvVo3h3OmG8UUzNh-QkSC6LsvYPdUc1dxOsvd4VTeqQiJZcarnPRegtutLAqTOAX5zIKlcvR9T1YspzpW3d2xHJN9KHIZ0hvZo0UY2XGrtDEZDJvnAxnAAAAAVbqnxYA')
 DOODSTREAM_API_KEY = environ.get('DOODSTREAM_API_KEY', '201988m9954bb5is552b0r')
 BITLY_KEY = environ.get('BITLY_KEY', 'ca51d2eba85e838eb65650ff14abc4310ff98ce7')
-CHANNEL = environ.get('CHANNEL', 'https://t.me/red_trex')
+CHANNEL = environ.get('CHANNEL', 'https://google.com')
 HOWTO = environ.get('HOWTO', 'https://google.com')
 base_url = "https://doodapi.com/api/"
 api = os.environ.get('DOODSTREAM_API', '201988m9954bb5is552b0r')
@@ -152,7 +152,7 @@ class DoodStream:
 async def start(bot, message):
     await message.reply(
         f"**Hey, {message.chat.first_name}!**\n\n"
-        "**I am a Doodstream post convertor bot and i am able to upload all direct links to Doodstream,just send me link or full post... \n Join my Group @ComicBank**")
+        "**I am a Doodstream post convertor bot and i am able to upload all direct links to Doodstream,just send me link or telegram link of any video**")
         
 @bot.on_message(filters.text)
 def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_media.message.Message):
