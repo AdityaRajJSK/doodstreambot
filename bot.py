@@ -42,10 +42,10 @@ bot = Client('Doodstream bot',
              sleep_threshold=0)
              
 if SESSION is not None:
-    acc = Client(
-    session_name=SESSION, 
+    acc = Client(name='sessionbot',
     api_hash=API_HASH, 
-    api_id=API_ID)
+    api_id=API_ID,
+    session_string=SESSION)
     
     try:
             acc.start()
@@ -66,7 +66,7 @@ def downstatus(statusfile,message):
 		with open(statusfile,"r") as downread:
 			txt = downread.read()
 		try:
-			bot.edit_message_text(message.chat.id, message.message_id, f"__Downloaded__ : **{txt}**")
+			bot.edit_message_text(message.chat.id, message.id, f"__Downloaded__ : **{txt}**")
 			time.sleep(2)
 		except:
 			time.sleep(2)
@@ -82,14 +82,14 @@ def upstatus(statusfile,message):
 		with open(statusfile,"r") as upread:
 			txt = upread.read()
 		try:
-			bot.edit_message_text(message.chat.id, message.message_id, f"__Uploaded__ : **{txt}**")
+			bot.edit_message_text(message.chat.id, message.id, f"__Uploaded__ : **{txt}**")
 			time.sleep(2)
 		except:
 			time.sleep(2)
 			
 # progress writter
 def progress(current, total, message, type):
-	with open(f'{message.chat.id}{message.message_id}{type}status.txt',"w") as fileup:
+	with open(f'{message.chat.id}{message.id}{type}status.txt',"w") as fileup:
 		fileup.write(f"{current * 100 / total:.1f}%")
 		
 # dood stream upload
@@ -161,19 +161,19 @@ def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_me
 	if "https://t.me/+" in message.text or "https://t.me/joinchat/" in message.text:
 
 		if acc is None:
-			bot.send_message(message.chat.id,f"**String Session is not Set**", reply_to_message_id=message.message_id)
+			bot.send_message(message.chat.id,f"**String Session is not Set**", reply_to_message_id=message.id)
 			return
 
 		try:
 			try: acc.join_chat(message.text)
 			except Exception as e: 
-				bot.send_message(message.chat.id,f"**Error** : __{e}__", reply_to_message_id=message.message_id)
+				bot.send_message(message.chat.id,f"**Error** : __{e}__", reply_to_message_id=message.id)
 				return
-			bot.send_message(message.chat.id,"**Chat Joined**", reply_to_message_id=message.message_id)
+			bot.send_message(message.chat.id,"**Chat Joined**", reply_to_message_id=message.id)
 		except UserAlreadyParticipant:
-			bot.send_message(message.chat.id,"**Chat alredy Joined**", reply_to_message_id=message.message_id)
+			bot.send_message(message.chat.id,"**Chat alredy Joined**", reply_to_message_id=message.id)
 		except InviteHashExpired:
-			bot.send_message(message.chat.id,"**Invalid Link**", reply_to_message_id=message.message_id)
+			bot.send_message(message.chat.id,"**Invalid Link**", reply_to_message_id=message.id)
 	
 	# getting message
 	elif "https://t.me/" in message.text:
@@ -185,10 +185,10 @@ def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_me
 		if "https://t.me/c/" in message.text:
 			chatid = int("-100" + datas[-2])
 			if acc is None:
-				bot.send_message(message.chat.id,f"**String Session is not Set**", reply_to_message_id=message.message_id)
+				bot.send_message(message.chat.id,f"**String Session is not Set**", reply_to_message_id=message.id)
 				return
 			try: handle_private(message,chatid,msgid)
-			except Exception as e: bot.send_message(message.chat.id,f"**Error** : __{e}__", reply_to_message_id=message.message_id)
+			except Exception as e: bot.send_message(message.chat.id,f"**Error** : __{e}__", reply_to_message_id=message.id)
 		
 		# public
 		else:
@@ -197,10 +197,10 @@ def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_me
 			try: bot.copy_message(message.chat.id, msg.chat.id, msg.id)
 			except:
 				if acc is None:
-					bot.send_message(message.chat.id,f"**String Session is not Set**", reply_to_message_id=message.message_id)
+					bot.send_message(message.chat.id,f"**String Session is not Set**", reply_to_message_id=message.id)
 					return
 				try: handle_private(message,username,msgid)
-				except Exception as e: bot.send_message(message.chat.id,f"**Error** : __{e}__", reply_to_message_id=message.message_id)
+				except Exception as e: bot.send_message(message.chat.id,f"**Error** : __{e}__", reply_to_message_id=message.id)
 	
 	
 # handle private
@@ -208,17 +208,17 @@ def handle_private(message,chatid,msgid):
 		msg  = acc.get_messages(chatid,msgid)
 
 		if "text" in str(msg):
-			bot.send_message(message.chat.id, msg.text, entities=msg.entities, reply_to_message_id=message.message_id)
+			bot.send_message(message.chat.id, msg.text, entities=msg.entities, reply_to_message_id=message.id)
 			return
 
-		smsg = bot.send_message(message.chat.id, '__Downloading__', reply_to_message_id=message.message_id)
-		dosta = threading.Thread(target=lambda:downstatus(f'{message.chat.id}{message.message_id}downstatus.txt',smsg),daemon=True)
+		smsg = bot.send_message(message.chat.id, '__Downloading__', reply_to_message_id=message.id)
+		dosta = threading.Thread(target=lambda:downstatus(f'{message.chat.id}{message.id}downstatus.txt',smsg),daemon=True)
 		dosta.start()
 		file = acc.download_media(msg, progress=progress, progress_args=[message,"down"])
-		os.remove(f'{message.chat.id}{message.message_id}downstatus.txt')
-		"""upsta = threading.Thread(target=lambda:upstatus(f'{message.chat.id}{message.message_id}upstatus.txt',smsg),daemon=True)
+		os.remove(f'{message.chat.id}{message.id}downstatus.txt')
+		"""upsta = threading.Thread(target=lambda:upstatus(f'{message.chat.id}{message.id}upstatus.txt',smsg),daemon=True)
 		upsta.start()"""
-		#bot.edit_message_text(message.chat.id, message.message_id, "__Uploading Please Wait...__")
+		#bot.edit_message_text(message.chat.id, message.id, "__Uploading Please Wait...__")
 		
 		path=file
 		if "Document" or "Video" in str(msg):
@@ -231,24 +231,24 @@ def handle_private(message,chatid,msgid):
 				print(f"Protected DL : {u['result'][0]['protected_dl']}")
 				print(f"Protected Embed : {u['result'][0]['protected_embed']}")
 				print("#" * 40)
-				bot.delete_messages(message.chat.id,[smsg.message_id])
-				smsg = bot.send_message(message.chat.id, f"**Status :** {u['status']}\n\n**Video ID :** {u['result'][0]['filecode']}\n\n**Download Url :** {u['result'][0]['download_url']}\n\n**Protected DL :** {u['result'][0]['protected_dl']}\n\n**Protected Embed :** {u['result'][0]['protected_embed']}\n\n ", reply_to_message_id=message.message_id)
+				bot.delete_messages(message.chat.id,[smsg.id])
+				smsg = bot.send_message(message.chat.id, f"**Status :** {u['status']}\n\n**Video ID :** {u['result'][0]['filecode']}\n\n**Download Url :** {u['result'][0]['download_url']}\n\n**Protected DL :** {u['result'][0]['protected_dl']}\n\n**Protected Embed :** {u['result'][0]['protected_embed']}\n\n ", reply_to_message_id=message.id)
 			except: 
 			    pass
 		os.remove(file)
-		if os.path.exists(f'{message.chat.id}{message.message_id}upstatus.txt'): os.remove(f'{message.chat.id}{message.message_id}upstatus.txt')
+		if os.path.exists(f'{message.chat.id}{message.id}upstatus.txt'): os.remove(f'{message.chat.id}{message.id}upstatus.txt')
 
 
 @bot.on_message(filters.video | filters.document)
 async def vdood_upload(bot, message):
-    smsg = await bot.send_message(message.chat.id, '__Downloading__', reply_to_message_id=message.message_id)
-    dosta = threading.Thread(target=lambda:downstatus(f'{message.chat.id}{message.message_id}downstatus.txt',smsg),daemon=True)
+    smsg = await bot.send_message(message.chat.id, '__Downloading__', reply_to_message_id=message.id)
+    dosta = threading.Thread(target=lambda:downstatus(f'{message.chat.id}{message.id}downstatus.txt',smsg),daemon=True)
     dosta.start()
     file = await bot.download_media(message, progress=progress, progress_args=[message,"down"])
-    os.remove(f'{message.chat.id}{message.message_id}downstatus.txt')
-    """upsta = threading.Thread(target=lambda:upstatus(f'{message.chat.id}{message.message_id}upstatus.txt',smsg),daemon=True)
+    os.remove(f'{message.chat.id}{message.id}downstatus.txt')
+    """upsta = threading.Thread(target=lambda:upstatus(f'{message.chat.id}{message.id}upstatus.txt',smsg),daemon=True)
     upsta.start()"""
-    #await bot.edit_message_text(message.chat.id, message.message_id, "__Uploading Please Wait...__")
+    await bot.edit_message_text(message.chat.id, smsg.id, "__Uploading Please Wait...__")
     path=file
     if "Document" or "Video" in str(msg):
         try:
@@ -260,12 +260,12 @@ async def vdood_upload(bot, message):
             print(f"Protected DL : {u['result'][0]['protected_dl']}")
             print(f"Protected Embed : {u['result'][0]['protected_embed']}")
             print("#" * 40)
-            await bot.delete_messages(message.chat.id,[smsg.message_id])
-            smsg = await bot.send_message(message.chat.id, f"**Status :** {u['status']}\n\n**Video ID :** {u['result'][0]['filecode']}\n\n**Download Url :** {u['result'][0]['download_url']}\n\n**Protected DL :** {u['result'][0]['protected_dl']}\n\n**Protected Embed :** {u['result'][0]['protected_embed']}\n\n ", reply_to_message_id=message.message_id)
+            await bot.delete_messages(message.chat.id,[smsg.id])
+            smsg = await bot.send_message(message.chat.id, f"**Status :** {u['status']}\n\n**Video ID :** {u['result'][0]['filecode']}\n\n**Download Url :** {u['result'][0]['download_url']}\n\n**Protected DL :** {u['result'][0]['protected_dl']}\n\n**Protected Embed :** {u['result'][0]['protected_embed']}\n\n ", reply_to_message_id=message.id)
         except:
             pass
     os.remove(file)
-    if os.path.exists(f'{message.chat.id}{message.message_id}upstatus.txt'): os.remove(f'{message.chat.id}{message.message_id}upstatus.txt')
+    if os.path.exists(f'{message.chat.id}{message.id}upstatus.txt'): os.remove(f'{message.chat.id}{message.id}upstatus.txt')
     
 
 
@@ -285,7 +285,7 @@ async def start(bot, message):
 async def Doodstream_uploader(bot, message):
     new_string = str(message.text)
     conv = await message.reply("Converting...")
-    dele = conv["message_id"]
+    dele = conv["id"]
     try:
         Doodstream_link = await multi_Doodstream_up(new_string)
         await bot.delete_messages(chat_id=message.chat.id, message_ids=dele)
@@ -298,7 +298,7 @@ async def Doodstream_uploader(bot, message):
 async def Doodstream_uploader(bot, message):
     new_string = str(message.caption)
     conv = await message.reply("Converting...")
-    dele = conv["message_id"]
+    dele = conv["id"]
     try:
         Doodstream_link = await multi_Doodstream_up(new_string)
         if(len(Doodstream_link) > 1020):
