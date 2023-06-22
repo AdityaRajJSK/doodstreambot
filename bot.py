@@ -38,8 +38,7 @@ bot = Client('Doodstream bot',
              api_id=API_ID,
              api_hash=API_HASH,
              bot_token=BOT_TOKEN,
-             workers=50,
-             sleep_threshold=0)
+             max_concurrent_transmissions=10)
              
 if SESSION is not None:
     acc = Client(name='sessionbot',
